@@ -22,12 +22,31 @@
       </svg>
       <span id="weather-toggle-text" class="text-xs font-semibold text-gray-700">Weer laden...</span>
     </button>
-    <a href="./route.gpx" download class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-white/90 px-2.5 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:px-3">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
-      </svg>
-      <span class="hidden text-xs font-semibold text-gray-700 sm:inline">.GPX</span>
-    </a>
+    <div class="relative">
+      <button id="gpx-toggle" class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-white/90 px-2.5 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:px-3" onclick="document.getElementById('gpx-dropdown').classList.toggle('hidden')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
+        </svg>
+        <span class="hidden text-xs font-semibold text-gray-700 sm:inline">.GPX</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+      <div id="gpx-dropdown" class="absolute right-0 mt-1.5 hidden w-48 overflow-hidden rounded-lg bg-white/95 shadow-2xl backdrop-blur">
+        <a href="./route.gpx" download class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
+          </svg>
+          Route (normaal)
+        </a>
+        <a href="./route-reverse.gpx" download class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
+          </svg>
+          Route (omgekeerd)
+        </a>
+      </div>
+    </div>
     <button id="menu-toggle" class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-white/90 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:w-10" onclick="document.getElementById('menu-panel').classList.toggle('translate-x-full')">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
@@ -107,6 +126,21 @@
 <div id="map" class="h-full w-full"></div>
 
 <script>
+    // --- Close overlays on outside click ---
+    document.addEventListener("click", function (e) {
+      const dropdown = document.getElementById("gpx-dropdown");
+      const gpxToggle = document.getElementById("gpx-toggle");
+      if (!dropdown.classList.contains("hidden") && !gpxToggle.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add("hidden");
+      }
+
+      const menuPanel = document.getElementById("menu-panel");
+      const menuToggle = document.getElementById("menu-toggle");
+      if (!menuPanel.classList.contains("translate-x-full") && !menuPanel.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuPanel.classList.add("translate-x-full");
+      }
+    });
+
     // --- Participants ---
     const participants = [
       { name: "Gill", avatar: "participants/gill.jpeg", desc: "Altijd rustig en op z’n gemak. Terwijl de rest al na 30 km begint te klinken als een kapotte stofzuiger, rijdt hij er gewoon tussen alsof hij nog moet opwarmen. Grote uithouding, geen stress en vooral het levende bewijs dat het probleem niet het tempo is, maar gewoon de conditie van de anderen." },
@@ -211,7 +245,7 @@
 
     let routeLatLngs = [];
 
-    const gpxLayer = new L.GPX("./route.gpx", {
+    new L.GPX("./route.gpx", {
         async: true,
         markers: {
             startIcon: "./icons/marker-start.svg",
@@ -252,31 +286,6 @@
             document.getElementById("stat-duration").textContent = `~${h}u${m.toString().padStart(2, "0")}`;
             document.getElementById("stats-bar").classList.remove("hidden");
 
-            const layers = e.target.getLayers();
-            for (const l of layers) {
-              if (l.getLatLngs) {
-                const lls = l.getLatLngs();
-                if (lls.length > 0) {
-                  routeLatLngs = Array.isArray(lls[0]) ? lls.flat() : lls;
-                  break;
-                }
-              }
-            }
-
-            // Click on polyline for distance
-            for (const l of layers) {
-              if (l instanceof L.Polyline && !(l instanceof L.Polygon)) {
-                l.on("click", function (ev) {
-                  const clickLL = ev.latlng;
-                  const distFromStart = distanceAlongRoute(clickLL);
-                  L.popup()
-                    .setLatLng(clickLL)
-                    .setContent(`<b>${distFromStart.toFixed(1)} km</b> vanaf start`)
-                    .openOn(map);
-                });
-              }
-            }
-
             // Coffee stops
             L.marker([51.221954, 2.931081], {icon: coffeeIcon})
                 .bindPopup("<b>Oostende</b><br>na 62km")
@@ -301,21 +310,6 @@
             fetchWeather();
         })
         .addTo(map);
-
-    // --- Distance along route ---
-    function distanceAlongRoute(latlng) {
-      let minDist = Infinity;
-      let closestIdx = 0;
-      for (let i = 0; i < routeLatLngs.length; i++) {
-        const d = latlng.distanceTo(routeLatLngs[i]);
-        if (d < minDist) { minDist = d; closestIdx = i; }
-      }
-      let total = 0;
-      for (let i = 1; i <= closestIdx; i++) {
-        total += routeLatLngs[i - 1].distanceTo(routeLatLngs[i]);
-      }
-      return total / 1000;
-    }
 
     // --- Weather (Open-Meteo, no API key) ---
     let weatherLoaded = false;
