@@ -12,22 +12,22 @@
 <body class="relative m-0 h-screen w-screen overflow-hidden">
 
 <!-- Header -->
-<header class="pointer-events-none fixed top-0 left-0 z-[1000] flex w-full items-start justify-between bg-gradient-to-b from-black/60 to-transparent px-6 py-5">
-  <h1 class="text-2xl font-bold tracking-tight text-white drop-shadow-lg">Ronde van West-Vlaanderen</h1>
-  <div class="pointer-events-auto flex gap-2">
-    <button id="weather-toggle" class="flex h-10 items-center gap-2 rounded-lg bg-white/90 px-3 shadow-lg backdrop-blur transition hover:bg-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+<header class="pointer-events-none fixed top-0 left-0 z-[1000] flex w-full items-start justify-between gap-3 bg-gradient-to-b from-black/60 to-transparent px-4 py-4 sm:px-6 sm:py-5">
+  <h1 class="min-w-0 truncate text-lg font-bold tracking-tight text-white drop-shadow-lg sm:text-2xl">Ronde van West-Vlaanderen</h1>
+  <div class="pointer-events-auto flex shrink-0 gap-1.5 sm:gap-2">
+    <button id="weather-toggle" class="flex h-9 items-center gap-1.5 rounded-lg bg-white/90 px-2.5 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:px-3" onclick="toggleWeather()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
       </svg>
       <span id="weather-toggle-text" class="text-xs font-semibold text-gray-700">Weer laden...</span>
     </button>
-    <a href="./route.gpx" download class="flex h-10 cursor-pointer items-center gap-2 rounded-lg bg-white/90 px-3 shadow-lg backdrop-blur transition hover:bg-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <a href="./route.gpx" download class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-white/90 px-2.5 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:px-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
       </svg>
-      <span class="text-xs font-semibold text-gray-700">.GPX</span>
+      <span class="hidden text-xs font-semibold text-gray-700 sm:inline">.GPX</span>
     </a>
-    <button id="menu-toggle" class="pointer-events-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-white/90 shadow-lg backdrop-blur transition hover:bg-white" onclick="document.getElementById('menu-panel').classList.toggle('translate-x-full')">
+    <button id="menu-toggle" class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-white/90 shadow-lg backdrop-blur transition hover:bg-white sm:h-10 sm:w-10" onclick="document.getElementById('menu-panel').classList.toggle('translate-x-full')">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
@@ -278,22 +278,22 @@
 
             // Coffee stops
             L.marker([51.221954, 2.931081], {icon: coffeeIcon})
-                .bindPopup("<b>Oostende</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b>Oostende</b><br>na 62km")
                 .addTo(map);
             L.marker([51.1335093, 2.7491624], {icon: coffeeIcon})
-                .bindPopup("<b>Nieuwpoort</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b>Nieuwpoort</b><br>Na 85km")
                 .addTo(map);
             L.marker([50.7458659, 2.8297794], {icon: coffeeIcon})
-                .bindPopup("<b>Nieuwkerke</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b>Nieuwkerke</b><br>na 180km")
                 .addTo(map);
             L.marker([50.796206, 3.121463], {icon: coffeeIcon})
-                .bindPopup("<b>Menen</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b>Menen</b><br>Na 220km")
                 .addTo(map);
             L.marker([50.891010, 3.423814], {icon: coffeeIcon})
-                .bindPopup("<b>Waregem</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b>Waregem</b><br>Na 280km")
                 .addTo(map);
             L.marker([51.127272, 3.372208], {icon: coffeeIcon})
-                .bindPopup("<b> St Joris, Beernem</b><br>Tijd voor een tas koffie!")
+                .bindPopup("<b> St Joris, Beernem</b><br>Na 325km")
                 .addTo(map);
 
             // Weather
