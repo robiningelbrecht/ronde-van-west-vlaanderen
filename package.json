@@ -1,0 +1,16 @@
+{
+  "name": "ronde-van-west-vlaanderen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}

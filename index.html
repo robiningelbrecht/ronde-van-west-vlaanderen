@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ronde van West-Vlaanderen</title>
+    <link rel="stylesheet" href="./src/output.css"/>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-gpx@2.1.2/gpx.js"></script>
+</head>
+<body class="m-0 h-screen w-screen overflow-hidden">
+<div id="map" class="h-full w-full"></div>
+
+<script>
+    const map = L.map("map");
+
+    L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png",
+        {
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: "abcd",
+            maxZoom: 20,
+        },
+    ).addTo(map);
+
+    const coffeeIcon = L.icon({
+        iconUrl: "./icons/marker-coffee.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+    });
+
+    new L.GPX("./route.gpx", {
+        async: true,
+        markers: {
+            startIcon: "./icons/marker-start.svg",
+            endIcon: "./icons/marker-start.svg",
+            wptIcons: {},
+        },
+        marker_options: {
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            shadowUrl: "",
+        },
+        polyline_options: {
+            color: "#3b82f6",
+            weight: 4,
+            opacity: 0.85,
+        },
+    })
+        .on("addpoint", function (e) {
+            if (e.point_type === "end") {
+                e.point.bindPopup("<b>Start</b><br>Vertrek & aankomst Ronde van West-Vlaanderen");
+            }
+        })
+        .on("loaded", function (e) {
+            map.fitBounds(e.target.getBounds(), {padding: [20, 20]});
+
+            L.marker([51.221954, 2.931081], {icon: coffeeIcon})
+                .bindPopup("<b>Oostende</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+            L.marker([51.1335093, 2.7491624], {icon: coffeeIcon})
+                .bindPopup("<b>Nieuwpoort</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+            L.marker([50.7458659, 2.8297794], {icon: coffeeIcon})
+                .bindPopup("<b>Nieuwkerke</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+            L.marker([50.796206, 3.121463], {icon: coffeeIcon})
+                .bindPopup("<b>Menen</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+            L.marker([50.891010, 3.423814], {icon: coffeeIcon})
+                .bindPopup("<b>Waregem</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+            L.marker([51.127272, 3.372208], {icon: coffeeIcon})
+                .bindPopup("<b> St Joris, Beernem</b><br>Tijd voor een tas koffie!")
+                .addTo(map);
+        })
+        .addTo(map);
+</script>
+</body>
+</html>
