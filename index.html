@@ -13,14 +13,64 @@
     <script src="https://unpkg.com/leaflet-gpx@2.1.2/gpx.js"></script>
 </head>
 <body class="relative m-0 h-screen w-screen overflow-hidden">
-<header class="pointer-events-none fixed top-0 left-0 z-[1000] w-full bg-gradient-to-b from-black/60 to-transparent px-6 py-5">
+<header class="pointer-events-none fixed top-0 left-0 z-[1000] flex w-full items-start justify-between bg-gradient-to-b from-black/60 to-transparent px-6 py-5">
   <h1 class="text-2xl font-bold tracking-tight text-white drop-shadow-lg">Ronde van West-Vlaanderen</h1>
+  <button id="menu-toggle" class="pointer-events-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-white/90 shadow-lg backdrop-blur transition hover:bg-white" onclick="document.getElementById('menu-panel').classList.toggle('translate-x-full')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
 </header>
+
+<div id="menu-panel" class="fixed top-0 right-0 z-[1001] h-full w-full translate-x-full sm:w-80 transform bg-white/95 shadow-2xl backdrop-blur transition-transform duration-300">
+  <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+    <h2 class="text-lg font-bold text-gray-900">Deelnemers</h2>
+    <button onclick="document.getElementById('menu-panel').classList.add('translate-x-full')" class="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <ul id="participant-list" class="overflow-y-auto px-4 py-3"></ul>
+</div>
+
+<div id="participant-modal" class="fixed inset-0 z-[1002] flex hidden items-center justify-center bg-black/50 backdrop-blur-sm" onclick="if(event.target===this)this.classList.add('hidden')">
+  <div class="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+    <div class="flex flex-col items-center text-center">
+      <img id="modal-avatar" class="mb-4 h-24 w-24 rounded-full object-cover shadow-md" src="" alt="">
+      <h3 id="modal-name" class="mb-2 text-xl font-bold text-gray-900"></h3>
+      <p id="modal-desc" class="text-sm leading-relaxed text-gray-600"></p>
+    </div>
+    <button onclick="document.getElementById('participant-modal').classList.add('hidden')" class="mt-6 w-full rounded-xl bg-gray-900 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800">Sluiten</button>
+  </div>
+</div>
+
 <div id="map" class="h-full w-full"></div>
 
 <script>
+    const participants = [
+      { name: "Gill", avatar: "https://ui-avatars.com/api/?name=Gill&background=3b82f6&color=fff&size=200", desc: "Altijd paraat voor een stevige rit. Gill trapt de groep op gang en houdt het tempo hoog." },
+      { name: "Leo", avatar: "https://ui-avatars.com/api/?name=Leo&background=22c55e&color=fff&size=200", desc: "De klimmer van de groep. Leo voelt zich thuis op elke heuvel in West-Vlaanderen." },
+      { name: "Ruben", avatar: "https://ui-avatars.com/api/?name=Ruben&background=ef4444&color=fff&size=200", desc: "Sprinter pur sang. Ruben geeft alles in de laatste kilometers." },
+      { name: "Stijn", avatar: "https://ui-avatars.com/api/?name=Stijn&background=f59e0b&color=fff&size=200", desc: "De strateeg. Stijn kent elke bocht en weet precies wanneer hij moet versnellen." },
+      { name: "Robin", avatar: "https://ui-avatars.com/api/?name=Robin&background=8b5cf6&color=fff&size=200", desc: "Organisator en motor van de Ronde. Robin zorgt dat iedereen op tijd aan de start staat." },
+    ];
+
+    const list = document.getElementById("participant-list");
+    participants.forEach((p) => {
+      const li = document.createElement("li");
+      li.className = "flex cursor-pointer items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-100";
+      li.innerHTML = `<img src="${p.avatar}" class="h-10 w-10 rounded-full object-cover" alt="${p.name}"><span class="text-sm font-semibold text-gray-800">${p.name}</span>`;
+      li.onclick = () => {
+        document.getElementById("modal-avatar").src = p.avatar;
+        document.getElementById("modal-name").textContent = p.name;
+        document.getElementById("modal-desc").textContent = p.desc;
+        document.getElementById("participant-modal").classList.remove("hidden");
+      };
+      list.appendChild(li);
+    });
+
     const map = L.map("map", { zoomControl: false });
-    L.control.zoom({ position: "topright" }).addTo(map);
 
     L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png",
