@@ -77,14 +77,14 @@
 </div>
 
 <!-- Participant modal -->
-<div id="participant-modal" class="fixed inset-0 z-[1002] flex hidden items-center justify-center bg-black/50 backdrop-blur-sm" onclick="if(event.target===this)this.classList.add('hidden')">
-  <div class="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+<div id="participant-modal" class="fixed inset-0 z-[1002] flex hidden items-center justify-center bg-black/50 backdrop-blur-sm" onclick="event.stopPropagation(); if(event.target===this)this.classList.add('hidden')">
+  <div class="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl" onclick="event.stopPropagation()">
     <div class="flex flex-col items-center text-center">
       <img id="modal-avatar" class="mb-4 h-24 w-24 rounded-full object-cover shadow-md" src="" alt="">
       <h3 id="modal-name" class="mb-2 text-xl font-bold text-gray-900"></h3>
       <p id="modal-desc" class="text-sm leading-relaxed text-gray-600"></p>
     </div>
-    <button onclick="document.getElementById('participant-modal').classList.add('hidden')" class="mt-6 w-full cursor-pointer rounded-xl bg-gray-900 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800">Sluiten</button>
+    <button onclick="event.stopPropagation(); document.getElementById('participant-modal').classList.add('hidden')" class="mt-6 w-full cursor-pointer rounded-xl bg-gray-900 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800">Sluiten</button>
   </div>
 </div>
 
@@ -119,7 +119,9 @@
 
       const menuPanel = document.getElementById("menu-panel");
       const menuToggle = document.getElementById("menu-toggle");
-      if (!menuPanel.classList.contains("translate-x-full") && !menuPanel.contains(e.target) && !menuToggle.contains(e.target)) {
+      const participantModal = document.getElementById("participant-modal");
+      const modalOpen = !participantModal.classList.contains("hidden");
+      if (!menuPanel.classList.contains("translate-x-full") && !menuPanel.contains(e.target) && !menuToggle.contains(e.target) && !modalOpen) {
         menuPanel.classList.add("translate-x-full");
       }
     });
@@ -301,8 +303,7 @@
         const data = await res.json();
         const c = data.current;
         const icon = weatherIcon(c.weather_code);
-        const summary = `${icon} ${Math.round(c.temperature_2m)}°C | Wind ${Math.round(c.wind_speed_10m)} km/u`;
-        document.getElementById("weather-toggle-text").innerHTML = summary;
+        document.getElementById("weather-toggle-text").innerHTML = `${icon} ${Math.round(c.temperature_2m)}°C | Wind ${Math.round(c.wind_speed_10m)} km/u`;
         weatherLoaded = true;
       } catch (e) {
         document.getElementById("weather-toggle-text").textContent = "Weer niet beschikbaar";
