@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Ronde van West-Vlaanderen</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg"/>
     <link rel="stylesheet" href="./src/output.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -108,11 +109,11 @@
 <script>
     // --- Participants ---
     const participants = [
-      { name: "Gill", avatar: "https://ui-avatars.com/api/?name=Gill&background=3b82f6&color=fff&size=200", desc: "Altijd paraat voor een stevige rit. Gill trapt de groep op gang en houdt het tempo hoog." },
-      { name: "Leo", avatar: "https://ui-avatars.com/api/?name=Leo&background=22c55e&color=fff&size=200", desc: "De klimmer van de groep. Leo voelt zich thuis op elke heuvel in West-Vlaanderen." },
-      { name: "Ruben", avatar: "https://ui-avatars.com/api/?name=Ruben&background=ef4444&color=fff&size=200", desc: "Sprinter pur sang. Ruben geeft alles in de laatste kilometers." },
-      { name: "Stijn", avatar: "https://ui-avatars.com/api/?name=Stijn&background=f59e0b&color=fff&size=200", desc: "De strateeg. Stijn kent elke bocht en weet precies wanneer hij moet versnellen." },
-      { name: "Robin", avatar: "https://ui-avatars.com/api/?name=Robin&background=8b5cf6&color=fff&size=200", desc: "Organisator en motor van de Ronde. Robin zorgt dat iedereen op tijd aan de start staat." },
+      { name: "Gill", avatar: "participants/gill.jpeg", desc: "Altijd rustig en op z’n gemak. Terwijl de rest al na 30 km begint te klinken als een kapotte stofzuiger, rijdt hij er gewoon tussen alsof hij nog moet opwarmen. Grote uithouding, geen stress en vooral het levende bewijs dat het probleem niet het tempo is, maar gewoon de conditie van de anderen." },
+      { name: "Leo", avatar: "participants/leo.png", desc: "De joker van de groep. Commentaar heeft hij altijd, over het tempo, de route, de wind, en vooral over hoe iedereen het beter zou moeten doen. Opvallend genoeg valt het even stil wanneer er zelf moet doorgetrokken worden. Maar goed, iemand moet de sfeer erin houden terwijl de rest effectief fietst." },
+      { name: "Ruben", avatar: "participants/ruben.jpeg", desc: "De oudste van de groep, maar laat je niet misleiden: terwijl de rest nog bezig is met hun 'jonge benen', rijdt hij ze er één voor één af alsof het niks is. Hij zegt niet veel, waarschijnlijk omdat hij al weet hoe het gaat aflopen. Een beetje kraken en piepen bij het opstappen, maar eens hij rolt: pure vernedering voor de rest." },
+      { name: "Stijn", avatar: "participants/stijn.png", desc: "De strateeg van de groep en altijd overvoorbereid. Heeft voor elke rit drie scenario’s, twee noodplannen en waarschijnlijk een Excel-sheet die niemand ooit zal zien. Gelukkig maar, want zonder hem zouden de anderen verloren rijden" },
+      { name: "Robin", avatar: "participants/robin.png", desc: "Grote baas van de planning, maar zodra er een wolkje verschijnt zit hij veilig binnen op Zwift “even een training af te werken”. Kent elke route van buiten, zolang het maar virtueel is." },
     ];
 
     const list = document.getElementById("participant-list");
