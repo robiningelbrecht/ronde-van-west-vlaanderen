@@ -12,11 +12,15 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-gpx@2.1.2/gpx.js"></script>
 </head>
-<body class="m-0 h-screen w-screen overflow-hidden">
+<body class="relative m-0 h-screen w-screen overflow-hidden">
+<header class="pointer-events-none fixed top-0 left-0 z-[1000] w-full bg-gradient-to-b from-black/60 to-transparent px-6 py-5">
+  <h1 class="text-2xl font-bold tracking-tight text-white drop-shadow-lg">Ronde van West-Vlaanderen</h1>
+</header>
 <div id="map" class="h-full w-full"></div>
 
 <script>
-    const map = L.map("map");
+    const map = L.map("map", { zoomControl: false });
+    L.control.zoom({ position: "topright" }).addTo(map);
 
     L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png",
@@ -54,7 +58,7 @@
     })
         .on("addpoint", function (e) {
             if (e.point_type === "end") {
-                e.point.bindPopup("<b>Start</b><br>Vertrek & aankomst Ronde van West-Vlaanderen");
+                e.point.bindPopup("<b>Vertrek & aankomst</b>");
             }
         })
         .on("loaded", function (e) {
